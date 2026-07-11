@@ -15,9 +15,23 @@ export class CadastroOrganizacao {
     this.router.navigate(['/']);
   }
 
-  concluirCadastro() {
+concluirCadastro() {
 
   const perfil = localStorage.getItem('perfilUsuario');
+  const usuario = localStorage.getItem('usuario');
+  const senha = localStorage.getItem('senha');
+
+  if (!perfil || !usuario || !senha) {
+
+    alert('Finalize o cadastro antes de continuar.');
+
+    this.router.navigate(['/cadastro']);
+
+    return;
+
+  }
+
+  localStorage.setItem('usuarioLogado', 'true');
 
   switch (perfil) {
 
@@ -34,9 +48,13 @@ export class CadastroOrganizacao {
       break;
 
     default:
+
+      localStorage.removeItem('usuarioLogado');
       this.router.navigate(['/']);
       break;
+
   }
 
 }
+
 }

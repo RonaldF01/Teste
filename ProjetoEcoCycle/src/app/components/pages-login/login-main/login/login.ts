@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 export class Login {
 
   constructor(private router: Router) {}
+
+  email = '';
+  senha = '';
 
   slideAtual = 0;
 
@@ -69,25 +73,46 @@ export class Login {
     this.slideAtual = indice;
   }
 
- entrar() {
+entrar() {
 
+  const emailSalvo = localStorage.getItem('usuario');
+  const senhaSalva = localStorage.getItem('senha');
   const perfil = localStorage.getItem('perfilUsuario');
 
-  if (perfil === 'gerador') {
+  if (!emailSalvo || !senhaSalva || !perfil) {
 
-    this.router.navigate(['/gerador/dashboard']);
+    alert('Nenhum usuário cadastrado.');
+    return;
 
-  } else if (perfil === 'cooperativa') {
+  }
 
-    this.router.navigate(['/cooperativa/dashboard']);
+  if (this.email !== emailSalvo || this.senha !== senhaSalva) {
 
-  } else if (perfil === 'recicladora') {
+    alert('E-mail ou senha inválidos.');
+    return;
 
-    this.router.navigate(['/recicladora/dashboard']);
+  }
 
-  } else {
+  localStorage.setItem('usuarioLogado', 'true');
 
-    alert('Nenhum perfil cadastrado.');
+  switch (perfil) {
+
+    case 'gerador':
+      this.router.navigate(['/gerador/dashboard']);
+      break;
+
+    case 'cooperativa':
+      this.router.navigate(['/cooperativa/dashboard']);
+      break;
+
+    case 'recicladora':
+      this.router.navigate(['/recicladora/dashboard']);
+      break;
+
+    default:
+      localStorage.removeItem('usuarioLogado');
+      this.router.navigate(['/']);
+      break;
 
   }
 

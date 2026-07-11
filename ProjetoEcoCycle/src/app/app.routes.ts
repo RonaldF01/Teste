@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 // LOGIN
 import { Login } from './components/pages-login/login-main/login/login';
@@ -45,70 +46,76 @@ export const routes: Routes = [
     component: Perfil
   },
 
-  // GERADOR
+// GERADOR
 
-  {
-    path: 'gerador/dashboard',
-    component: DashboardGerador
-  },
+{
+  path: 'gerador/dashboard',
+  component: DashboardGerador,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'gerador/solicitar-coleta',
-    component: SolicitarColeta
-  },
+{
+  path: 'gerador/solicitar-coleta',
+  component: SolicitarColeta,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'gerador/incentivos-fiscais',
-    component: IncentivosFiscais
-  },
+{
+  path: 'gerador/incentivos-fiscais',
+  component: IncentivosFiscais,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'gerador/selos-certificados',
-    component: SelosCertificados
-  },
+{
+  path: 'gerador/selos-certificados',
+  component: SelosCertificados,
+  canActivate: [authGuard]
+},
 
-  // COOPERATIVA
+// COOPERATIVA
 
-  {
-    path: 'cooperativa/dashboard',
-    component: DashboardCooperativa
-  },
+{
+  path: 'cooperativa/dashboard',
+  component: DashboardCooperativa,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'cooperativa/match-emapa',
-    component: MatchEmapa
-  },
+{
+  path: 'cooperativa/match-emapa',
+  component: MatchEmapa,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'cooperativa/frota',
-    component: Frota
-  },
+{
+  path: 'cooperativa/frota',
+  component: Frota,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'cooperativa/coletas',
-    component: Coletas
-  },
+{
+  path: 'cooperativa/coletas',
+  component: Coletas,
+  canActivate: [authGuard]
+},
 
-  // RECICLADORA
+// RECICLADORA
 
-  {
-    path: 'recicladora/dashboard',
-    component: DashboardRecicladora
-  },
+{
+  path: 'recicladora/dashboard',
+  component: DashboardRecicladora,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'recicladora/recebimentos',
-    component: Recebimentos
-  },
+{
+  path: 'recicladora/recebimentos',
+  component: Recebimentos,
+  canActivate: [authGuard]
+},
 
-  {
-    path: 'recicladora/controle-de-volume',
-    component: ControleDeVolume
-  },
-
-  {
-    path: '**',
-    redirectTo: ''
-  }
+{
+  path: 'recicladora/controle-de-volume',
+  component: ControleDeVolume,
+  canActivate: [authGuard]
+},
 
 ];

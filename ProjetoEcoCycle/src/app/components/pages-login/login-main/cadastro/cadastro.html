@@ -22,67 +22,85 @@
 
     <div class="perfil-container">
 
-  <div
-    class="perfil-card"
-    [class.selected]="perfilSelecionado === 'gerador'"
-    (click)="selecionarPerfil('gerador')">
+      <div
+        class="perfil-card"
+        [class.selected]="perfilSelecionado === 'gerador'"
+        (click)="selecionarPerfil('gerador')">
 
-    <i class="fa-solid fa-building"></i>
-    <span>Gerador</span>
-  </div>
+        <i class="fa-solid fa-building"></i>
+        <span>Gerador</span>
 
-  <div
-    class="perfil-card"
-    [class.selected]="perfilSelecionado === 'cooperativa'"
-    (click)="selecionarPerfil('cooperativa')">
+      </div>
 
-    <i class="fa-solid fa-recycle"></i>
-    <span>Cooperativa</span>
-  </div>
+      <div
+        class="perfil-card"
+        [class.selected]="perfilSelecionado === 'cooperativa'"
+        (click)="selecionarPerfil('cooperativa')">
 
-  <div
-    class="perfil-card"
-    [class.selected]="perfilSelecionado === 'recicladora'"
-    (click)="selecionarPerfil('recicladora')">
+        <i class="fa-solid fa-recycle"></i>
+        <span>Cooperativa</span>
 
-    <i class="fa-solid fa-industry"></i>
-    <span>Recicladora</span>
-  </div>
+      </div>
 
-  </div>
+      <div
+        class="perfil-card"
+        [class.selected]="perfilSelecionado === 'recicladora'"
+        (click)="selecionarPerfil('recicladora')">
+
+        <i class="fa-solid fa-industry"></i>
+        <span>Recicladora</span>
+
+      </div>
+
+    </div>
+
+    <!-- EMAIL -->
 
     <label>E-mail</label>
 
     <div class="input-group">
+
       <i class="fa-regular fa-envelope"></i>
 
       <input
         type="email"
+        [(ngModel)]="email"
         placeholder="voce@empresa.com">
+
     </div>
+
+    <!-- SENHA -->
 
     <label>Senha</label>
 
     <div class="input-group">
+
       <i class="fa-solid fa-lock"></i>
 
       <input
         type="password"
+        [(ngModel)]="senha"
         placeholder="••••••••">
+
     </div>
+
+    <!-- CONFIRMAR SENHA -->
 
     <label>Confirmar Senha</label>
 
     <div class="input-group">
+
       <i class="fa-solid fa-lock"></i>
 
       <input
         type="password"
+        [(ngModel)]="confirmarSenha"
         placeholder="••••••••">
+
     </div>
 
     <button (click)="criarConta()">
-    Criar conta
+      Criar conta
     </button>
 
   </div>
