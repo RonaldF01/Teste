@@ -1,96 +1,203 @@
 <div class="layout">
 
-    <app-sidebar
-        perfil="cooperativa"
-        (menuAlterado)="alterarMenu($event)">
-    </app-sidebar>
+  <app-sidebar
+    perfil="cooperativa"
+    (menuAlterado)="alterarMenu($event)">
+  </app-sidebar>
 
-    <main
-        class="conteudo"
-        [class.menu-fechado]="!menuAberto">
+  <main
+    class="conteudo"
+    [class.menu-fechado]="!menuAberto">
 
-        <!-- Cabeçalho -->
+    <!-- Cabeçalho -->
 
-        <div class="pagina-header">
+    <div class="pagina-header">
+
+      <div>
+
+        <h1>Match & Mapa</h1>
+
+        <p>
+          Encontre coletas disponíveis e trace a rota mais rápida até o gerador.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-atualizar"
+        (click)="carregarColetas()">
+
+        <i class="fa-solid fa-rotate-right"></i>
+
+        Atualizar
+
+      </button>
+
+    </div>
+
+    <!-- Coletas -->
+
+    <section class="card">
+
+      <div class="titulo-card">
+
+        <h2>Coletas Disponíveis</h2>
+
+        <span>
+          {{ coletasDisponiveis.length }}
+          solicitação(ões)
+        </span>
+
+      </div>
+
+      <!-- Estado vazio -->
+
+      <div
+        class="estado-vazio"
+        *ngIf="coletasDisponiveis.length === 0">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <h3>Nenhuma coleta pendente</h3>
+
+        <p>
+          Novas solicitações aparecerão aqui após clicar em Atualizar.
+        </p>
+
+      </div>
+
+      <!-- Lista de coletas -->
+
+      <div
+        class="lista-coletas"
+        *ngIf="coletasDisponiveis.length > 0">
+
+        <div
+          class="card-coleta"
+          *ngFor="let coleta of coletasDisponiveis">
+
+          <div class="card-coleta-topo">
 
             <div>
 
-                <h1>Match & Mapa</h1>
+              <span class="status-coleta">
+                Pendente
+              </span>
 
-                <p>
-                    Encontre coletas disponíveis e trace a rota mais rápida até o gerador.
-                </p>
+              <h3>
+                {{ coleta.tipoResiduo }}
+              </h3>
 
             </div>
 
-            <button class="btn-atualizar">
+            <strong>
+              {{ coleta.pesoEstimado }} kg
+            </strong>
 
-                <i class="fa-solid fa-rotate-right"></i>
+          </div>
 
-                Atualizar
+          <div class="dados-coleta">
 
-            </button>
+            <p>
+
+              <i class="fa-solid fa-building"></i>
+
+              <strong>Gerador:</strong>
+
+              {{ coleta.geradorNome }}
+
+            </p>
+
+            <p>
+
+              <i class="fa-solid fa-location-dot"></i>
+
+              <strong>Endereço:</strong>
+
+              {{ coleta.enderecoColeta }}
+
+            </p>
+
+            <p>
+
+              <i class="fa-solid fa-calendar"></i>
+
+              <strong>Data:</strong>
+
+              {{ coleta.dataDesejada | date:'dd/MM/yyyy' }}
+
+            </p>
+
+            <p>
+
+              <i class="fa-solid fa-clock"></i>
+
+              <strong>Horário:</strong>
+
+              {{ coleta.horarioPreferido }}
+
+            </p>
+
+            <p *ngIf="coleta.observacoes">
+
+              <i class="fa-solid fa-comment"></i>
+
+              <strong>Observações:</strong>
+
+              {{ coleta.observacoes }}
+
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn-aceitar"
+            (click)="aceitarColeta(coleta)">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Aceitar Coleta
+
+          </button>
 
         </div>
 
-        <!-- Coletas -->
+      </div>
 
-        <section class="card">
+    </section>
 
-            <div class="titulo-card">
+    <!-- MAPA -->
 
-                <h2>Coletas Disponíveis</h2>
+    <section class="card">
 
-                <span>0 solicitações</span>
+      <div class="titulo-card">
 
-            </div>
+        <h2>
 
-            <div class="estado-vazio">
+          <i class="fa-solid fa-route"></i>
 
-                <i class="fa-solid fa-location-dot"></i>
+          Mapa
 
-                <h3>Nenhuma coleta pendente</h3>
+        </h2>
 
-                <p>
-                    Novas solicitações aparecerão aqui em tempo real.
-                </p>
+      </div>
 
-            </div>
+      <div class="mapa-vazio">
 
-        </section>
+        <i class="fa-solid fa-map-location-dot"></i>
 
-        <!-- MAPA -->
+        <h3>Mapa indisponível</h3>
 
-        <section class="card">
+        <p>
+          O mapa será exibido automaticamente após aceitar uma coleta.
+        </p>
 
-            <div class="titulo-card">
+      </div>
 
-                <h2>
+    </section>
 
-                    <i class="fa-solid fa-route"></i>
-
-                    Mapa
-
-                </h2>
-
-            </div>
-
-            <div class="mapa-vazio">
-
-                <i class="fa-solid fa-map-location-dot"></i>
-
-                <h3>Mapa indisponível</h3>
-
-                <p>
-
-                    O mapa será exibido automaticamente após aceitar uma coleta.
-
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
+  </main>
 
 </div>

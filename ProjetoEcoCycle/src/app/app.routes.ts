@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { authGuard } from './guards/auth-guard';
 
 // LOGIN
 import { Login } from './components/pages-login/login-main/login/login';
@@ -43,7 +43,8 @@ export const routes: Routes = [
 
   {
     path: 'perfil',
-    component: Perfil
+    component: Perfil,
+    canActivate: [authGuard]
   },
 
 // GERADOR

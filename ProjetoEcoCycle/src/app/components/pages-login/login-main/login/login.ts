@@ -1,23 +1,38 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Usuario } from '../../../../models/usuario';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login {
-
-  constructor(private router: Router) {}
+export class Login implements OnInit, OnDestroy {
 
   email = '';
   senha = '';
 
+  aceitouTermos = false;
+
   slideAtual = 0;
+
+  modalTermosAberto = false;
+
+  abaTermos: 'privacidade' | 'termos' = 'privacidade';
+
+  private intervaloCarrossel?: ReturnType<typeof setInterval>;
 
   slides = [
     {
@@ -32,7 +47,6 @@ export class Login {
         'Acesso a incentivos fiscais'
       ]
     },
-
     {
       titulo: 'COOPERATIVA',
       icone: 'fa-recycle',
@@ -45,7 +59,6 @@ export class Login {
         'Acompanhamento em tempo real'
       ]
     },
-
     {
       titulo: 'RECICLADORA',
       icone: 'fa-industry',
@@ -60,66 +73,165 @@ export class Login {
     }
   ];
 
-  proximoSlide() {
-    this.slideAtual = (this.slideAtual + 1) % this.slides.length;
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.iniciarCarrossel();
   }
 
-  slideAnterior() {
+  ngOnDestroy(): void {
+    this.pararCarrossel();
+
+    document.body.style.overflow = '';
+  }
+
+  iniciarCarrossel(): void {
+    this.pararCarrossel();
+
+    this.intervaloCarrossel = setInterval(() => {
+      this.proximoSlide();
+    }, 4000);
+  }
+
+  pararCarrossel(): void {
+    if (this.intervaloCarrossel) {
+      clearInterval(this.intervaloCarrossel);
+      this.intervaloCarrossel = undefined;
+    }
+  }
+
+  proximoSlide(): void {
     this.slideAtual =
-      (this.slideAtual - 1 + this.slides.length) % this.slides.length;
+      (this.slideAtual + 1) % this.slides.length;
   }
 
-  irParaSlide(indice: number) {
+  slideAnterior(): void {
+    this.slideAtual =
+      (this.slideAtual - 1 + this.slides.length) %
+      this.slides.length;
+
+    this.iniciarCarrossel();
+  }
+
+  irParaSlide(indice: number): void {
     this.slideAtual = indice;
+
+    this.iniciarCarrossel();
   }
 
-entrar() {
+  abrirTermos(
+    aba: 'privacidade' | 'termos' = 'privacidade'
+  ): void {
+    this.abaTermos = aba;
+    this.modalTermosAberto = true;
 
-  const emailSalvo = localStorage.getItem('usuario');
-  const senhaSalva = localStorage.getItem('senha');
-  const perfil = localStorage.getItem('perfilUsuario');
-
-  if (!emailSalvo || !senhaSalva || !perfil) {
-
-    alert('Nenhum usuário cadastrado.');
-    return;
-
+    document.body.style.overflow = 'hidden';
   }
 
-  if (this.email !== emailSalvo || this.senha !== senhaSalva) {
+  fecharTermos(): void {
+    this.modalTermosAberto = false;
 
-    alert('E-mail ou senha inválidos.');
-    return;
-
+    document.body.style.overflow = '';
   }
 
-  localStorage.setItem('usuarioLogado', 'true');
-
-  switch (perfil) {
-
-    case 'gerador':
-      this.router.navigate(['/gerador/dashboard']);
-      break;
-
-    case 'cooperativa':
-      this.router.navigate(['/cooperativa/dashboard']);
-      break;
-
-    case 'recicladora':
-      this.router.navigate(['/recicladora/dashboard']);
-      break;
-
-    default:
-      localStorage.removeItem('usuarioLogado');
-      this.router.navigate(['/']);
-      break;
-
+  selecionarAba(
+    aba: 'privacidade' | 'termos'
+  ): void {
+    this.abaTermos = aba;
   }
 
-}
+  fecharAoClicarFora(evento: MouseEvent): void {
+    const elemento = evento.target as HTMLElement;
 
-  irCadastro() {
+    if (elemento.classList.contains('modal-overlay')) {
+      this.fecharTermos();
+    }
+  }
+
+  entrar(): void {
+
+    if (!this.aceitouTermos) {
+      alert(
+        'Você precisa aceitar os Termos de Uso e a Política de Privacidade.'
+      );
+      return;
+    }
+
+    const emailTratado =
+      this.email.trim().toLowerCase();
+
+    if (!emailTratado || !this.senha) {
+      alert('Preencha o e-mail e a senha.');
+      return;
+    }
+
+    const usuarios: Usuario[] = JSON.parse(
+      localStorage.getItem('usuarios') || '[]'
+    );
+
+    if (usuarios.length === 0) {
+      alert('Nenhum usuário cadastrado.');
+      return;
+    }
+
+    const usuarioEncontrado = usuarios.find(
+      usuario =>
+        usuario.email.toLowerCase() === emailTratado &&
+        usuario.senha === this.senha
+    );
+
+    if (!usuarioEncontrado) {
+      alert('E-mail ou senha inválidos.');
+      return;
+    }
+
+    localStorage.setItem(
+      'usuarioLogado',
+      'true'
+    );
+
+    localStorage.setItem(
+      'usuarioAtual',
+      usuarioEncontrado.email
+    );
+
+    localStorage.setItem(
+      'perfilUsuario',
+      usuarioEncontrado.perfil
+    );
+
+    this.redirecionarPorPerfil(
+      usuarioEncontrado.perfil
+    );
+  }
+
+  private redirecionarPorPerfil(
+    perfil: Usuario['perfil']
+  ): void {
+
+    switch (perfil) {
+
+      case 'gerador':
+        this.router.navigate([
+          '/gerador/dashboard'
+        ]);
+        break;
+
+      case 'cooperativa':
+        this.router.navigate([
+          '/cooperativa/dashboard'
+        ]);
+        break;
+
+      case 'recicladora':
+        this.router.navigate([
+          '/recicladora/dashboard'
+        ]);
+        break;
+    }
+  }
+
+  irCadastro(): void {
     this.router.navigate(['/cadastro']);
   }
-
 }

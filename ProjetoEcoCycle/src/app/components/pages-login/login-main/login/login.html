@@ -17,7 +17,12 @@
     <div class="perfil-carousel">
 
       <div class="icone-perfil">
-        <i class="fa-solid" [ngClass]="slides[slideAtual].icone"></i>
+
+        <i
+          class="fa-solid"
+          [ngClass]="slides[slideAtual].icone">
+        </i>
+
       </div>
 
       <span>
@@ -46,15 +51,15 @@
 
     </ul>
 
-    <div class="indicadores">
+      <div class="indicadores">
 
-      <span
-        *ngFor="let slide of slides; let i = index"
-        [class.ativo]="i == slideAtual"
-        (click)="irParaSlide(i)">
-      </span>
+  <span
+    *ngFor="let slide of slides; let i = index"
+    [class.ativo]="i === slideAtual"
+    (click)="irParaSlide(i)">
+  </span>
 
-    </div>
+</div>
 
   </div>
 
@@ -74,47 +79,628 @@
 
       <h2>Bem-vindo de volta</h2>
 
-      <p>Acesse sua conta Eco Cycle</p>
+      <p>Acesse sua conta EcoCycle</p>
 
     </div>
 
     <div class="login-card">
 
-      <label>E-mail</label>
+      <!-- E-MAIL -->
+
+      <label for="email">
+        E-mail
+      </label>
 
       <div class="input-group">
 
         <i class="fa-regular fa-envelope"></i>
 
         <input
+          id="email"
+          name="email"
           type="email"
           [(ngModel)]="email"
-          placeholder="voce@empresa.com">
+          placeholder="voce@empresa.com"
+          autocomplete="email">
 
       </div>
 
-      <label>Senha</label>
+      <!-- SENHA -->
+
+      <label for="senha">
+        Senha
+      </label>
 
       <div class="input-group">
 
         <i class="fa-solid fa-lock"></i>
 
         <input
+          id="senha"
+          name="senha"
           type="password"
           [(ngModel)]="senha"
-          placeholder="••••••••">
+          placeholder="••••••••"
+          autocomplete="current-password"
+          (keydown.enter)="entrar()">
 
       </div>
 
-      <button (click)="entrar()">
-        Entrar
+      <div class="aceite-lgpd">
+
+  <label class="checkbox-lgpd">
+
+    <input
+      type="checkbox"
+      name="aceitouTermos"
+      [(ngModel)]="aceitouTermos">
+
+    <span class="checkmark"></span>
+
+    <span class="texto-aceite">
+
+      Declaro que li e concordo integralmente com os
+
+      <button
+        type="button"
+        class="link-termo-inline"
+        (click)="abrirTermos('termos')">
+
+        Termos de Uso
+
+      </button>
+
+      e a
+
+      <button
+        type="button"
+        class="link-termo-inline"
+        (click)="abrirTermos('privacidade')">
+
+        Política de Privacidade
+
+      </button>.
+
+    </span>
+
+  </label>
+
+</div>
+
+    <button
+      type="button"
+      class="btn-entrar"
+      [disabled]="!aceitouTermos"
+      (click)="entrar()">
+
+      Entrar
+
+    </button>
+
+    </div>
+
+    <!-- CADASTRO -->
+
+    <div class="register-link">
+
+      Não tem uma conta?
+
+      <a
+        role="button"
+        tabindex="0"
+        (click)="irCadastro()"
+        (keydown.enter)="irCadastro()">
+
+        Criar conta
+
+      </a>
+
+    </div>
+
+    <!-- LINKS LEGAIS -->
+
+    <div class="links-legais">
+
+      <button
+        type="button"
+        class="link-legal"
+        (click)="abrirTermos('privacidade')">
+
+        Política de Privacidade
+
+      </button>
+
+      <span>•</span>
+
+      <button
+        type="button"
+        class="link-legal"
+        (click)="abrirTermos('termos')">
+
+        Termos de Uso
+
       </button>
 
     </div>
 
-    <div class="register-link">
-      Não tem uma conta?
-      <a (click)="irCadastro()">Criar conta</a>
+  </div>
+
+</div>
+
+<!-- ================= MODAL LEGAL ================= -->
+
+<div
+  class="modal-overlay"
+  *ngIf="modalTermosAberto"
+  (click)="fecharAoClicarFora($event)">
+
+  <div
+    class="modal-legal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="tituloModalLegal">
+
+    <!-- CABEÇALHO DO MODAL -->
+
+    <div class="modal-header">
+
+      <div>
+
+        <div class="modal-logo">
+
+          <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+        <div>
+
+          <h2 id="tituloModalLegal">
+            Privacidade e Termos
+          </h2>
+
+          <p>EcoCycle</p>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-fechar-modal"
+        aria-label="Fechar modal"
+        (click)="fecharTermos()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <!-- ABAS -->
+
+    <div class="modal-abas">
+
+      <button
+        type="button"
+        [class.aba-ativa]="abaTermos === 'privacidade'"
+        (click)="selecionarAba('privacidade')">
+
+        <i class="fa-solid fa-user-shield"></i>
+
+        Política de Privacidade
+
+      </button>
+
+      <button
+        type="button"
+        [class.aba-ativa]="abaTermos === 'termos'"
+        (click)="selecionarAba('termos')">
+
+        <i class="fa-solid fa-file-contract"></i>
+
+        Termos de Uso
+
+      </button>
+
+    </div>
+
+    <!-- CONTEÚDO -->
+
+    <div class="modal-conteudo">
+
+      <!-- POLÍTICA DE PRIVACIDADE -->
+
+      <article *ngIf="abaTermos === 'privacidade'">
+
+        <h1>Política de Privacidade</h1>
+
+        <p class="data-atualizacao">
+          Última atualização: 11 de julho de 2026
+        </p>
+
+        <p>
+          A EcoCycle respeita a privacidade de seus usuários e reconhece
+          a importância da proteção dos dados pessoais. Esta Política de
+          Privacidade explica como os dados poderão ser coletados,
+          utilizados, armazenados e protegidos durante a utilização da
+          plataforma.
+        </p>
+
+        <p>
+          A EcoCycle é um protótipo acadêmico desenvolvido com foco em
+          frontend. Os dados informados são armazenados localmente no
+          navegador do usuário por meio do localStorage e não são enviados
+          para um servidor ou banco de dados central.
+        </p>
+
+        <h2>1. Dados tratados</h2>
+
+        <p>
+          A plataforma poderá armazenar os seguintes dados fornecidos
+          diretamente pelo usuário:
+        </p>
+
+        <ul>
+          <li>e-mail;</li>
+          <li>senha utilizada no protótipo;</li>
+          <li>tipo de perfil;</li>
+          <li>nome da organização;</li>
+          <li>CNPJ;</li>
+          <li>telefone;</li>
+          <li>endereço, cidade e estado;</li>
+          <li>dados de solicitações de coleta;</li>
+          <li>tipo e peso estimado dos resíduos;</li>
+          <li>data, horário e endereço da coleta;</li>
+          <li>observações fornecidas pelo usuário.</li>
+        </ul>
+
+        <h2>2. Finalidade dos dados</h2>
+
+        <p>
+          Os dados são utilizados para:
+        </p>
+
+        <ul>
+          <li>criar e autenticar usuários;</li>
+          <li>identificar o tipo de perfil;</li>
+          <li>exibir os dados da organização;</li>
+          <li>registrar solicitações de coleta;</li>
+          <li>exibir coletas disponíveis às cooperativas;</li>
+          <li>associar coletas aos usuários envolvidos;</li>
+          <li>demonstrar as funcionalidades da plataforma;</li>
+          <li>manter a sessão do usuário no navegador.</li>
+        </ul>
+
+        <h2>3. Armazenamento local</h2>
+
+        <p>
+          As informações ficam armazenadas no localStorage do navegador.
+          Isso significa que os dados permanecem apenas no navegador e
+          no dispositivo em que foram cadastrados.
+        </p>
+
+        <ul>
+          <li>
+            outro computador não terá acesso automático aos mesmos dados;
+          </li>
+
+          <li>
+            limpar os dados de navegação poderá excluir os cadastros;
+          </li>
+
+          <li>
+            a aplicação não sincroniza dados entre dispositivos;
+          </li>
+
+          <li>
+            o modo anônimo poderá apagar os dados ao encerrar a sessão.
+          </li>
+        </ul>
+
+        <h2>4. Compartilhamento</h2>
+
+        <p>
+          Os dados armazenados no navegador não são enviados
+          automaticamente ao Vercel, GitHub ou a terceiros pela lógica
+          deste protótipo.
+        </p>
+
+        <p>
+          Algumas informações operacionais podem ser exibidas entre os
+          perfis simulados dentro do mesmo navegador. Por exemplo, uma
+          coleta cadastrada por um Gerador poderá aparecer na área
+          Match &amp; Mapa de uma Cooperativa.
+        </p>
+
+        <h2>5. Segurança</h2>
+
+        <p>
+          O localStorage é utilizado apenas para fins acadêmicos e de
+          demonstração. Ele não é adequado para armazenar senhas ou dados
+          pessoais em uma aplicação comercial real.
+        </p>
+
+        <div class="aviso-seguranca">
+
+          <i class="fa-solid fa-triangle-exclamation"></i>
+
+          <p>
+            Utilize dados fictícios durante testes e apresentações.
+          </p>
+
+        </div>
+
+        <h2>6. Retenção e exclusão</h2>
+
+        <p>
+          Os dados permanecerão no navegador até que sejam removidos pela
+          aplicação, apagados manualmente ou excluídos por meio das
+          configurações do navegador.
+        </p>
+
+        <h2>7. Direitos do titular</h2>
+
+        <p>
+          O usuário poderá solicitar ou realizar, quando aplicável:
+        </p>
+
+        <ul>
+          <li>acesso aos dados;</li>
+          <li>correção de informações;</li>
+          <li>exclusão dos dados;</li>
+          <li>informações sobre o tratamento;</li>
+          <li>revogação do consentimento, quando aplicável.</li>
+        </ul>
+
+        <h2>8. Dados de crianças e adolescentes</h2>
+
+        <p>
+          A plataforma não é destinada a crianças e adolescentes e não
+          busca coletar conscientemente dados pessoais desse público.
+        </p>
+
+        <h2>9. Alterações</h2>
+
+        <p>
+          Esta política poderá ser atualizada para refletir alterações na
+          plataforma, nas funcionalidades ou na legislação aplicável.
+        </p>
+
+        <h2>10. Contato</h2>
+
+        <div class="contato-legal">
+
+          <i class="fa-regular fa-envelope"></i>
+
+          <div>
+
+            <strong>Equipe EcoCycle</strong>
+
+            <span>contato@ecocycle.com.br</span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <!-- TERMOS DE USO -->
+
+      <article *ngIf="abaTermos === 'termos'">
+
+        <h1>Termos de Uso</h1>
+
+        <p class="data-atualizacao">
+          Última atualização: 11 de julho de 2026
+        </p>
+
+        <p>
+          Estes Termos de Uso estabelecem as condições de acesso e
+          utilização da plataforma EcoCycle.
+        </p>
+
+        <p>
+          Ao utilizar a aplicação, o usuário declara ter lido e
+          compreendido estas condições.
+        </p>
+
+        <h2>1. Natureza da plataforma</h2>
+
+        <p>
+          A EcoCycle é um protótipo acadêmico desenvolvido para demonstrar
+          uma solução frontend voltada à gestão e rastreabilidade de
+          resíduos.
+        </p>
+
+        <p>
+          Esta versão não representa um serviço ambiental, logístico,
+          fiscal, jurídico ou comercial real.
+        </p>
+
+        <h2>2. Perfis disponíveis</h2>
+
+        <ul>
+
+          <li>
+
+            <strong>Gerador:</strong>
+
+            pode solicitar coletas e acompanhar funcionalidades
+            relacionadas à geração de resíduos.
+
+          </li>
+
+          <li>
+
+            <strong>Cooperativa:</strong>
+
+            pode visualizar e aceitar coletas disponíveis.
+
+          </li>
+
+          <li>
+
+            <strong>Recicladora:</strong>
+
+            pode utilizar as funcionalidades de recebimento e controle de
+            volume.
+
+          </li>
+
+        </ul>
+
+        <h2>3. Cadastro</h2>
+
+        <p>
+          O usuário é responsável por fornecer informações corretas e
+          atualizadas.
+        </p>
+
+        <p>
+          Não é permitido:
+        </p>
+
+        <ul>
+          <li>utilizar dados de terceiros sem autorização;</li>
+          <li>tentar acessar a conta de outro usuário;</li>
+          <li>inserir conteúdo ilegal ou fraudulento;</li>
+          <li>explorar falhas da aplicação;</li>
+          <li>comprometer a segurança do sistema.</li>
+        </ul>
+
+        <h2>4. Senha</h2>
+
+        <p>
+          O usuário é responsável por manter a confidencialidade de sua
+          senha.
+        </p>
+
+        <p>
+          Como esta versão armazena credenciais localmente no navegador,
+          não devem ser utilizadas senhas reais ou reutilizadas em outros
+          serviços.
+        </p>
+
+        <div class="aviso-seguranca">
+
+          <i class="fa-solid fa-triangle-exclamation"></i>
+
+          <p>
+            Não utilize senhas bancárias, profissionais ou pessoais reais.
+          </p>
+
+        </div>
+
+        <h2>5. Solicitações de coleta</h2>
+
+        <p>
+          As solicitações cadastradas têm finalidade demonstrativa.
+          O registro ou aceite de uma coleta não cria obrigação contratual
+          real entre os usuários.
+        </p>
+
+        <h2>6. Uso permitido</h2>
+
+        <p>
+          A plataforma deve ser utilizada para finalidades lícitas,
+          acadêmicas, educacionais e demonstrativas.
+        </p>
+
+        <h2>7. Uso proibido</h2>
+
+        <ul>
+          <li>utilizar a aplicação para atividades ilegais;</li>
+          <li>introduzir códigos maliciosos;</li>
+          <li>alterar indevidamente dados de outros usuários;</li>
+          <li>usar a plataforma como comprovante ambiental oficial;</li>
+          <li>explorar comercialmente o sistema sem autorização.</li>
+        </ul>
+
+        <h2>8. Disponibilidade</h2>
+
+        <p>
+          Não existe garantia de funcionamento contínuo ou sem erros.
+          A aplicação poderá ficar indisponível por manutenção, falhas de
+          hospedagem ou problemas no dispositivo do usuário.
+        </p>
+
+        <h2>9. Limitação de responsabilidade</h2>
+
+        <p>
+          Os desenvolvedores não se responsabilizam por:
+        </p>
+
+        <ul>
+          <li>perda de dados armazenados no navegador;</li>
+          <li>uso de dados reais inseridos pelo usuário;</li>
+          <li>uso da aplicação fora de sua finalidade acadêmica;</li>
+          <li>falhas causadas pelo navegador ou dispositivo;</li>
+          <li>compartilhamento indevido de credenciais.</li>
+        </ul>
+
+        <h2>10. Propriedade intelectual</h2>
+
+        <p>
+          A identidade visual, o código, os textos, as telas e demais
+          elementos da EcoCycle pertencem aos respectivos responsáveis,
+          respeitadas as licenças de conteúdos de terceiros utilizados no
+          projeto.
+        </p>
+
+        <h2>11. Privacidade</h2>
+
+        <p>
+          O tratamento dos dados está descrito na Política de Privacidade
+          disponível neste mesmo modal.
+        </p>
+
+        <h2>12. Legislação aplicável</h2>
+
+        <p>
+          Estes termos são interpretados conforme a legislação brasileira,
+          observada a natureza acadêmica do protótipo.
+        </p>
+
+        <h2>13. Contato</h2>
+
+        <div class="contato-legal">
+
+          <i class="fa-regular fa-envelope"></i>
+
+          <div>
+
+            <strong>Equipe EcoCycle</strong>
+
+            <span>contato@ecocycle.com.br</span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+    <!-- RODAPÉ DO MODAL -->
+
+    <div class="modal-footer">
+
+      <p>
+        Ao continuar utilizando o EcoCycle, você declara ter lido estes
+        documentos.
+      </p>
+
+      <button
+        type="button"
+        class="btn-entendi"
+        (click)="fecharTermos()">
+
+        <i class="fa-solid fa-check"></i>
+
+        Entendi
+
+      </button>
+
     </div>
 
   </div>

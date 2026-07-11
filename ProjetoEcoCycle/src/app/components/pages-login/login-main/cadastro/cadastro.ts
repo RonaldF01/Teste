@@ -1,55 +1,113 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './cadastro.html',
-  styleUrl: './cadastro.css',
+  styleUrl: './cadastro.css'
 })
 export class Cadastro {
 
   perfilSelecionado = '';
   email = '';
-
   senha = '';
-
   confirmarSenha = '';
+
+  aceitouTermos = false;
+
+  modalTermosAberto = false;
+
+  abaTermos: 'privacidade' | 'termos' = 'privacidade';
 
   constructor(private router: Router) {}
 
-  selecionarPerfil(perfil: string) {
+  selecionarPerfil(perfil: string): void {
     this.perfilSelecionado = perfil;
   }
 
-  voltarLogin() {
+  voltarLogin(): void {
     this.router.navigate(['/']);
   }
 
-criarConta() {
+  abrirTermos(
+    aba: 'privacidade' | 'termos'
+  ): void {
 
-  if (!this.perfilSelecionado) {
-    alert('Selecione um perfil.');
-    return;
+    this.abaTermos = aba;
+    this.modalTermosAberto = true;
+
+    document.body.style.overflow = 'hidden';
   }
 
-  if (!this.email || !this.senha || !this.confirmarSenha) {
-    alert('Preencha todos os campos.');
-    return;
+  fecharTermos(): void {
+
+    this.modalTermosAberto = false;
+
+    document.body.style.overflow = '';
   }
 
-  if (this.senha !== this.confirmarSenha) {
-    alert('As senhas não coincidem.');
-    return;
+  selecionarAba(
+    aba: 'privacidade' | 'termos'
+  ): void {
+
+    this.abaTermos = aba;
   }
 
-  localStorage.setItem('perfilUsuario', this.perfilSelecionado);
-  localStorage.setItem('emailUsuario', this.email);
-  localStorage.setItem('senhaUsuario', this.senha);
+  fecharAoClicarFora(evento: MouseEvent): void {
 
-  this.router.navigate(['/cadastro-organizacao']);
+    const elemento = evento.target as HTMLElement;
 
-}
+    if (elemento.classList.contains('modal-overlay')) {
+      this.fecharTermos();
+    }
+  }
 
+  criarConta(): void {
+
+    if (!this.aceitouTermos) {
+      alert(
+        'Você precisa aceitar os Termos de Uso e a Política de Privacidade.'
+      );
+      return;
+    }
+
+    if (!this.perfilSelecionado) {
+      alert('Selecione um perfil.');
+      return;
+    }
+
+    if (!this.email || !this.senha || !this.confirmarSenha) {
+      alert('Preencha todos os campos.');
+      return;
+    }
+
+    if (this.senha !== this.confirmarSenha) {
+      alert('As senhas não coincidem.');
+      return;
+    }
+
+    localStorage.setItem(
+      'perfilCadastroTemporario',
+      this.perfilSelecionado
+    );
+
+    localStorage.setItem(
+      'emailCadastroTemporario',
+      this.email.trim().toLowerCase()
+    );
+
+    localStorage.setItem(
+      'senhaCadastroTemporaria',
+      this.senha
+    );
+
+    this.router.navigate(['/cadastro-organizacao']);
+  }
 }

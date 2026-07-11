@@ -1,94 +1,174 @@
 <div class="organizacao-page">
 
-    <div class="logo-area">
+  <div class="logo-area">
 
-      <div class="logo">
-        ♻
-      </div>  
-
-      <h1>
-        Eco<span>Cycle</span>
-      </h1>
-
-      <p>Configure o seu perfil para começar</p>
-
+    <div class="logo">
+      ♻
     </div>
 
-    <div class="login-card">
-        <h2 class="titulo-card">
-            Dados da Organização
-        </h2>
+    <h1>
+      Eco<span>Cycle</span>
+    </h1>
 
-        <label>Nome da Organização</label>
+    <p>Configure o seu perfil para começar</p>
 
-        <div class="input-group">
-            <i class="fa-solid fa-building"></i>
-            <input type="text" placeholder="Ex: Cooperativa Verde SP">  
-        </div>
+  </div>
 
-        <div class="linha-dupla">
-            <div>
-                <label>CNPJ</label>
-                <div class="input-group">
-                    <input type="text" placeholder="00.000.000/0000-00">
-                </div>
-            </div>
-        </div>
+  <div class="login-card">
 
+    <h2 class="titulo-card">
+      Dados da Organização
+    </h2>
 
-        <div>
-            <label>Telefone</label>
-            <div class="input-group">
-                <i class="fa-solid fa-phone"></i>
-                <input type="text" placeholder="(11) 99999-0000">
-            </div>
-        </div>
+    <!-- NOME DA ORGANIZAÇÃO -->
 
-        <label>Endereço</label>
+    <label for="nomeOrganizacao">
+      Nome da Organização
+    </label>
 
-     <div class="input-group">
-      <i class="fa-solid fa-location-dot"></i>
+    <div class="input-group">
+
+      <i class="fa-solid fa-building"></i>
+
       <input
+        id="nomeOrganizacao"
+        name="nomeOrganizacao"
         type="text"
-        placeholder="Rua, número, bairro">
+        [(ngModel)]="nomeOrganizacao"
+        placeholder="Ex: Cooperativa Verde SP"
+      >
+
     </div>
 
-     <div class="linha-dupla">
+    <!-- CNPJ -->
+
+    <label for="cnpj">
+      CNPJ
+    </label>
+
+    <div class="input-group">
+
+      <input
+        id="cnpj"
+        name="cnpj"
+        type="text"
+        [(ngModel)]="cnpj"
+        placeholder="00.000.000/0000-00"
+      >
+
+    </div>
+
+    <!-- TELEFONE -->
+
+    <label for="telefone">
+      Telefone
+    </label>
+
+    <div class="input-group">
+
+      <i class="fa-solid fa-phone"></i>
+
+      <input
+        id="telefone"
+        name="telefone"
+        type="text"
+        [(ngModel)]="telefone"
+        placeholder="(11) 99999-0000"
+      >
+
+    </div>
+
+    <!-- ENDEREÇO -->
+
+    <label for="endereco">
+      Endereço
+    </label>
+
+    <div class="input-group">
+
+      <i class="fa-solid fa-location-dot"></i>
+
+      <input
+        id="endereco"
+        name="endereco"
+        type="text"
+        [(ngModel)]="endereco"
+        placeholder="Rua, número, bairro"
+      >
+
+    </div>
+
+    <!-- CIDADE E ESTADO -->
+
+    <div class="linha-dupla">
 
       <div>
-        <label>Cidade</label>
+
+        <label for="cidade">
+          Cidade
+        </label>
 
         <div class="input-group">
+
           <input
+            id="cidade"
+            name="cidade"
             type="text"
-            placeholder="São Paulo">
+            [(ngModel)]="cidade"
+            placeholder="São Paulo"
+          >
+
         </div>
+
       </div>
 
       <div>
-        <label>Estado</label>
+
+        <label for="estado">
+          Estado
+        </label>
 
         <div class="input-group">
+
           <input
+            id="estado"
+            name="estado"
             type="text"
-            placeholder="SP">
+            [(ngModel)]="estado"
+            maxlength="2"
+            placeholder="SP"
+          >
+
         </div>
+
       </div>
 
-      
     </div>
-    <div>
-    
-      <button (click)="concluirCadastro()">
-        Concluir
-      </button>
-    
-      <div class="voltar-login">
-          <a (click)="voltarLogin()">
-              <i class="fa-solid fa-arrow-left"></i>
-              Voltar ao login
-          </a>
-      </div>
-    
+
+    <button
+      type="button"
+      (click)="concluirCadastro()"
+    >
+      Concluir
+    </button>
+
+    <div class="voltar-login">
+
+      <a
+        role="button"
+        tabindex="0"
+        (click)="voltarLogin()"
+        (keydown.enter)="voltarLogin()"
+      >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Voltar ao login
+
+      </a>
+
     </div>
+
+  </div>
+
 </div>

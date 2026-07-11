@@ -1,1 +1,202 @@
-<p>perfil works!</p>
+<div class="perfil-page" *ngIf="usuario">
+
+  <div class="perfil-container">
+
+    <div class="cabecalho-perfil">
+
+      <div>
+        <h1>Meu Perfil</h1>
+        <p>Consulte e atualize os dados da sua organização.</p>
+      </div>
+
+      <button
+        type="button"
+        class="botao-voltar"
+        (click)="voltarDashboard()"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </button>
+
+    </div>
+
+    <div class="perfil-card">
+
+      <h2>Dados da conta</h2>
+
+      <div class="dados-conta">
+
+        <div class="campo-conta">
+
+          <span>Tipo de usuário</span>
+
+          <strong>
+            {{ nomePerfil }}
+          </strong>
+
+        </div>
+
+        <div class="campo-conta">
+
+          <span>E-mail</span>
+
+          <strong>
+            {{ usuario.email }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="perfil-card">
+
+      <h2>Dados da organização</h2>
+
+      <label for="nomeOrganizacao">
+        Nome da organização
+      </label>
+
+      <div class="input-group">
+
+        <i class="fa-solid fa-building"></i>
+
+        <input
+          id="nomeOrganizacao"
+          type="text"
+          [(ngModel)]="usuario.nomeOrganizacao"
+          placeholder="Nome da organização"
+        >
+
+      </div>
+
+      <div class="linha-dupla">
+
+        <div>
+
+          <label for="cnpj">
+            CNPJ
+          </label>
+
+          <div class="input-group">
+
+            <i class="fa-regular fa-file-lines"></i>
+
+            <input
+              id="cnpj"
+              type="text"
+              [(ngModel)]="usuario.cnpj"
+              placeholder="00.000.000/0000-00"
+            >
+
+          </div>
+
+        </div>
+
+        <div>
+
+          <label for="telefone">
+            Telefone
+          </label>
+
+          <div class="input-group">
+
+            <i class="fa-solid fa-phone"></i>
+
+            <input
+              id="telefone"
+              type="text"
+              [(ngModel)]="usuario.telefone"
+              placeholder="(11) 99999-0000"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <label for="endereco">
+        Endereço
+      </label>
+
+      <div class="input-group">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <input
+          id="endereco"
+          type="text"
+          [(ngModel)]="usuario.endereco"
+          placeholder="Rua, número e bairro"
+        >
+
+      </div>
+
+      <div class="linha-dupla">
+
+        <div>
+
+          <label for="cidade">
+            Cidade
+          </label>
+
+          <div class="input-group">
+
+            <input
+              id="cidade"
+              type="text"
+              [(ngModel)]="usuario.cidade"
+              placeholder="Cidade"
+            >
+
+          </div>
+
+        </div>
+
+        <div>
+
+          <label for="estado">
+            Estado
+          </label>
+
+          <div class="input-group">
+
+            <input
+              id="estado"
+              type="text"
+              maxlength="2"
+              [(ngModel)]="usuario.estado"
+              placeholder="BA"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="botao-salvar"
+        (click)="salvarAlteracoes()"
+      >
+        <i class="fa-solid fa-floppy-disk"></i>
+        Salvar alterações
+      </button>
+
+    </div>
+
+    <button
+      type="button"
+      class="botao-sair"
+      (click)="sair()"
+    >
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      Sair da conta
+    </button>
+
+  </div>
+
+</div>

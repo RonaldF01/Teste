@@ -18,6 +18,8 @@
 
   <div class="login-card">
 
+    <!-- TIPO DE ORGANIZAÇÃO -->
+
     <label>Tipo de organização</label>
 
     <div class="perfil-container">
@@ -28,6 +30,7 @@
         (click)="selecionarPerfil('gerador')">
 
         <i class="fa-solid fa-building"></i>
+
         <span>Gerador</span>
 
       </div>
@@ -38,6 +41,7 @@
         (click)="selecionarPerfil('cooperativa')">
 
         <i class="fa-solid fa-recycle"></i>
+
         <span>Cooperativa</span>
 
       </div>
@@ -48,66 +52,440 @@
         (click)="selecionarPerfil('recicladora')">
 
         <i class="fa-solid fa-industry"></i>
+
         <span>Recicladora</span>
 
       </div>
 
     </div>
 
-    <!-- EMAIL -->
+    <!-- E-MAIL -->
 
-    <label>E-mail</label>
+    <label for="email">
+      E-mail
+    </label>
 
     <div class="input-group">
 
       <i class="fa-regular fa-envelope"></i>
 
       <input
+        id="email"
+        name="email"
         type="email"
         [(ngModel)]="email"
-        placeholder="voce@empresa.com">
+        placeholder="voce@empresa.com"
+        autocomplete="email">
 
     </div>
 
     <!-- SENHA -->
 
-    <label>Senha</label>
+    <label for="senha">
+      Senha
+    </label>
 
     <div class="input-group">
 
       <i class="fa-solid fa-lock"></i>
 
       <input
+        id="senha"
+        name="senha"
         type="password"
         [(ngModel)]="senha"
-        placeholder="••••••••">
+        placeholder="••••••••"
+        autocomplete="new-password">
 
     </div>
 
     <!-- CONFIRMAR SENHA -->
 
-    <label>Confirmar Senha</label>
+    <label for="confirmarSenha">
+      Confirmar Senha
+    </label>
 
     <div class="input-group">
 
       <i class="fa-solid fa-lock"></i>
 
       <input
+        id="confirmarSenha"
+        name="confirmarSenha"
         type="password"
         [(ngModel)]="confirmarSenha"
-        placeholder="••••••••">
+        placeholder="••••••••"
+        autocomplete="new-password"
+        (keydown.enter)="aceitouTermos && criarConta()">
 
     </div>
 
-    <button (click)="criarConta()">
+    <!-- ACEITE DA LGPD -->
+
+    <div class="aceite-lgpd">
+
+      <label class="checkbox-lgpd">
+
+        <input
+          type="checkbox"
+          name="aceitouTermosCadastro"
+          [(ngModel)]="aceitouTermos">
+
+        <span class="checkmark"></span>
+
+        <span class="texto-aceite">
+
+          Declaro que li e concordo integralmente com os
+
+          <button
+            type="button"
+            class="link-termo-inline"
+            (click)="abrirTermos('termos')">
+
+            Termos de Uso
+
+          </button>
+
+          e a
+
+          <button
+            type="button"
+            class="link-termo-inline"
+            (click)="abrirTermos('privacidade')">
+
+            Política de Privacidade
+
+          </button>.
+
+        </span>
+
+      </label>
+
+    </div>
+
+    <!-- BOTÃO -->
+
+    <button
+      type="button"
+      class="btn-criar-conta"
+      [disabled]="!aceitouTermos"
+      (click)="criarConta()">
+
       Criar conta
+
     </button>
 
   </div>
 
   <div class="register-link">
+
     Já tem uma conta?
-    <a (click)="voltarLogin()">Entrar</a>
+
+    <a
+      role="button"
+      tabindex="0"
+      (click)="voltarLogin()"
+      (keydown.enter)="voltarLogin()">
+
+      Entrar
+
+    </a>
+
+  </div>
+
+  <!-- LINKS LEGAIS -->
+
+  <div class="links-legais">
+
+    <button
+      type="button"
+      class="link-legal"
+      (click)="abrirTermos('privacidade')">
+
+      Política de Privacidade
+
+    </button>
+
+    <span>•</span>
+
+    <button
+      type="button"
+      class="link-legal"
+      (click)="abrirTermos('termos')">
+
+      Termos de Uso
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- MODAL LEGAL -->
+
+<div
+  class="modal-overlay"
+  *ngIf="modalTermosAberto"
+  (click)="fecharAoClicarFora($event)">
+
+  <div
+    class="modal-legal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="tituloModalCadastro">
+
+    <div class="modal-header">
+
+      <div>
+
+        <div class="modal-logo">
+
+          <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+        <div>
+
+          <h2 id="tituloModalCadastro">
+            Privacidade e Termos
+          </h2>
+
+          <p>EcoCycle</p>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="btn-fechar-modal"
+        aria-label="Fechar"
+        (click)="fecharTermos()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+<div class="modal-abas">
+
+  <button
+    type="button"
+    [class.aba-ativa]="abaTermos === 'privacidade'"
+    (click)="selecionarAba('privacidade')">
+
+    <i class="fa-solid fa-user-shield"></i>
+    Política de Privacidade
+
+  </button>
+
+  <button
+    type="button"
+    [class.aba-ativa]="abaTermos === 'termos'"
+    (click)="selecionarAba('termos')">
+
+    <i class="fa-solid fa-file-contract"></i>
+    Termos de Uso
+
+  </button>
+
+</div>
+
+    <div class="modal-conteudo">
+
+      <article *ngIf="abaTermos === 'privacidade'">
+
+        <h1>Política de Privacidade</h1>
+
+        <p class="data-atualizacao">
+          Última atualização: 11 de julho de 2026
+        </p>
+
+        <p>
+          A EcoCycle respeita a privacidade de seus usuários e reconhece
+          a importância da proteção dos dados pessoais.
+        </p>
+
+        <p>
+          Esta aplicação é um protótipo acadêmico desenvolvido com foco
+          em frontend. Os dados informados são armazenados localmente no
+          navegador por meio do localStorage.
+        </p>
+
+        <h2>1. Dados tratados</h2>
+
+        <ul>
+          <li>e-mail e senha;</li>
+          <li>tipo de perfil;</li>
+          <li>nome e dados da organização;</li>
+          <li>CNPJ, telefone e endereço;</li>
+          <li>dados de solicitações de coleta;</li>
+          <li>tipo, peso, data e horário dos resíduos.</li>
+        </ul>
+
+        <h2>2. Finalidades</h2>
+
+        <ul>
+          <li>criar e autenticar contas;</li>
+          <li>identificar o tipo de usuário;</li>
+          <li>exibir informações da organização;</li>
+          <li>registrar e exibir solicitações de coleta;</li>
+          <li>demonstrar as funcionalidades do protótipo.</li>
+        </ul>
+
+        <h2>3. Armazenamento</h2>
+
+        <p>
+          Os dados permanecem no navegador utilizado. Eles não são
+          sincronizados automaticamente entre computadores ou navegadores.
+        </p>
+
+        <p>
+          A limpeza dos dados de navegação poderá excluir os cadastros e
+          demais informações armazenadas.
+        </p>
+
+        <h2>4. Segurança</h2>
+
+        <div class="aviso-seguranca">
+
+          <i class="fa-solid fa-triangle-exclamation"></i>
+
+          <p>
+            Não utilize dados pessoais sensíveis ou senhas reais neste
+            protótipo acadêmico.
+          </p>
+
+        </div>
+
+        <h2>5. Direitos do usuário</h2>
+
+        <p>
+          O usuário poderá consultar, corrigir ou excluir as informações
+          armazenadas localmente no navegador.
+        </p>
+
+        <h2>6. Contato</h2>
+
+        <div class="contato-legal">
+
+          <i class="fa-regular fa-envelope"></i>
+
+          <div>
+
+            <strong>Equipe EcoCycle</strong>
+
+            <span>contato@ecocycle.com.br</span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article *ngIf="abaTermos === 'termos'">
+
+        <h1>Termos de Uso</h1>
+
+        <p class="data-atualizacao">
+          Última atualização: 11 de julho de 2026
+        </p>
+
+        <p>
+          A EcoCycle é um protótipo acadêmico destinado à demonstração
+          de funcionalidades relacionadas à gestão de resíduos.
+        </p>
+
+        <h2>1. Cadastro</h2>
+
+        <p>
+          O usuário é responsável por fornecer informações corretas e por
+          manter a segurança de suas credenciais.
+        </p>
+
+        <h2>2. Perfis disponíveis</h2>
+
+        <ul>
+          <li>
+            <strong>Gerador:</strong>
+            solicita coletas.
+          </li>
+
+          <li>
+            <strong>Cooperativa:</strong>
+            visualiza e aceita coletas.
+          </li>
+
+          <li>
+            <strong>Recicladora:</strong>
+            registra recebimentos e volumes.
+          </li>
+        </ul>
+
+        <h2>3. Uso permitido</h2>
+
+        <p>
+          A plataforma deverá ser utilizada apenas para finalidades
+          acadêmicas, educacionais e demonstrativas.
+        </p>
+
+        <h2>4. Uso proibido</h2>
+
+        <ul>
+          <li>utilizar dados de terceiros sem autorização;</li>
+          <li>tentar acessar contas de outros usuários;</li>
+          <li>introduzir códigos maliciosos;</li>
+          <li>utilizar o protótipo como comprovante ambiental oficial.</li>
+        </ul>
+
+        <h2>5. Limitação de responsabilidade</h2>
+
+        <p>
+          Os desenvolvedores não se responsabilizam por perda de dados
+          armazenados no navegador ou pelo uso da aplicação fora de sua
+          finalidade acadêmica.
+        </p>
+
+        <h2>6. Contato</h2>
+
+        <div class="contato-legal">
+
+          <i class="fa-regular fa-envelope"></i>
+
+          <div>
+
+            <strong>Equipe EcoCycle</strong>
+
+            <span>contato@ecocycle.com.br</span>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <p>
+        Leia atentamente antes de aceitar.
+      </p>
+
+      <button
+        type="button"
+        class="btn-entendi"
+        (click)="fecharTermos()">
+
+        <i class="fa-solid fa-check"></i>
+
+        Entendi
+
+      </button>
+
+    </div>
+
   </div>
 
 </div>

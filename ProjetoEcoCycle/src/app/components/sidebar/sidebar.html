@@ -1,131 +1,182 @@
 <div class="sidebar" [class.closed]="!menuAberto">
 
-    <!-- TOPO -->
+  <!-- TOPO -->
 
-    <div class="sidebar-top">
+  <div class="sidebar-top">
 
-        <div class="logo">
-            <i class="fa-solid fa-recycle"></i>
-            <span>EcoCycle</span>
-        </div>
-
-         <i
-             class="fa-solid fa-chevron-left toggle"
-             [class.girar]="!menuAberto"
-             (click)="toggleMenu()">
-        </i>
-
+    <div class="logo">
+      <i class="fa-solid fa-recycle"></i>
+      <span>EcoCycle</span>
     </div>
 
-    <!-- PERFIL -->
+    <i
+      class="fa-solid fa-chevron-left toggle"
+      [class.girar]="!menuAberto"
+      (click)="toggleMenu()">
+    </i>
 
-    <div class="profile">
+  </div>
 
-        <small>PERFIL</small>
+  <!-- PERFIL -->
 
-        <h3>{{ perfil | titlecase }}</h3>
+  <div class="profile">
 
-    </div>
+    <small>PERFIL</small>
 
-    <!-- MENU -->
+    <h3>{{ perfil | titlecase }}</h3>
 
-    <div class="menu">
+  </div>
 
-        <!-- GERADOR -->
+  <!-- MENU -->
 
-        <ng-container *ngIf="perfil === 'gerador'">
+  <div class="menu">
 
-            <a routerLink="/gerador/dashboard">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Dashboard</span>
-            </a>
+    <!-- GERADOR -->
 
-            <a routerLink="/gerador/solicitar-coleta">
-                <i class="fa-solid fa-truck"></i>
-                <span>Solicitar Coleta</span>
-            </a>
+    <ng-container *ngIf="perfil === 'gerador'">
 
-            <a routerLink="/gerador/incentivos-fiscais">
-                <i class="fa-solid fa-coins"></i>
-                <span>Incentivos Fiscais</span>
-            </a>
+      <a
+        routerLink="/gerador/dashboard"
+        routerLinkActive="ativo"
+        [routerLinkActiveOptions]="{ exact: true }">
 
-            <a routerLink="/gerador/selos-certificados">
-                <i class="fa-solid fa-award"></i>
-                <span>Selos & Certificados</span>
-            </a>
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
 
-        </ng-container>
+      </a>
 
-        <!-- COOPERATIVA -->
+      <a
+        routerLink="/gerador/solicitar-coleta"
+        routerLinkActive="ativo">
 
-        <ng-container *ngIf="perfil === 'cooperativa'">
+        <i class="fa-solid fa-truck"></i>
+        <span>Solicitar Coleta</span>
 
-            <a routerLink="/cooperativa/dashboard">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Dashboard</span>
-            </a>
+      </a>
 
-            <a routerLink="/cooperativa/match-emapa">
-                <i class="fa-solid fa-map-location-dot"></i>
-                <span>Match & Mapa</span>
-            </a>
+      <a
+        routerLink="/gerador/incentivos-fiscais"
+        routerLinkActive="ativo">
 
-            <a routerLink="/cooperativa/frota">
-                <i class="fa-solid fa-truck-fast"></i>
-                <span>Frota</span>
-            </a>
+        <i class="fa-solid fa-coins"></i>
+        <span>Incentivos Fiscais</span>
 
-            <a routerLink="/cooperativa/coletas">
-                <i class="fa-solid fa-box"></i>
-                <span>Coletas</span>
-            </a>
+      </a>
 
-        </ng-container>
+      <a
+        routerLink="/gerador/selos-certificados"
+        routerLinkActive="ativo">
 
-        <!-- RECICLADORA -->
+        <i class="fa-solid fa-award"></i>
+        <span>Selos & Certificados</span>
 
-        <ng-container *ngIf="perfil === 'recicladora'">
+      </a>
 
-            <a routerLink="/recicladora/dashboard">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Dashboard</span>
-            </a>
+    </ng-container>
 
-            <a routerLink="/recicladora/recebimentos">
-                <i class="fa-solid fa-warehouse"></i>
-                <span>Recebimentos</span>
-            </a>
+    <!-- COOPERATIVA -->
 
-            <a routerLink="/recicladora/controle-de-volume">
-                <i class="fa-solid fa-weight-scale"></i>
-                <span>Controle de Volume</span>
-            </a>
+    <ng-container *ngIf="perfil === 'cooperativa'">
 
-        </ng-container>
+      <a
+        routerLink="/cooperativa/dashboard"
+        routerLinkActive="ativo"
+        [routerLinkActiveOptions]="{ exact: true }">
 
-    </div>
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
 
-    <!-- RODAPÉ -->
+      </a>
 
-    <div class="sidebar-footer">
+      <a
+        routerLink="/cooperativa/match-emapa"
+        routerLinkActive="ativo">
 
-        <a routerLink="/perfil">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <span>Match & Mapa</span>
 
-            <i class="fa-regular fa-user"></i>
+      </a>
 
-            <span>Perfil</span>
+      <a
+        routerLink="/cooperativa/frota"
+        routerLinkActive="ativo">
 
-        </a>
+        <i class="fa-solid fa-truck-fast"></i>
+        <span>Frota</span>
 
-        <a routerLink="/">
+      </a>
 
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <a
+        routerLink="/cooperativa/coletas"
+        routerLinkActive="ativo">
 
-            <span>Sair</span>
+        <i class="fa-solid fa-box"></i>
+        <span>Coletas</span>
 
-        </a>
+      </a>
 
-    </div>
+    </ng-container>
+
+    <!-- RECICLADORA -->
+
+    <ng-container *ngIf="perfil === 'recicladora'">
+
+      <a
+        routerLink="/recicladora/dashboard"
+        routerLinkActive="ativo"
+        [routerLinkActiveOptions]="{ exact: true }">
+
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+
+      </a>
+
+      <a
+        routerLink="/recicladora/recebimentos"
+        routerLinkActive="ativo">
+
+        <i class="fa-solid fa-warehouse"></i>
+        <span>Recebimentos</span>
+
+      </a>
+
+      <a
+        routerLink="/recicladora/controle-de-volume"
+        routerLinkActive="ativo">
+
+        <i class="fa-solid fa-weight-scale"></i>
+        <span>Controle de Volume</span>
+
+      </a>
+
+    </ng-container>
+
+  </div>
+
+  <!-- RODAPÉ -->
+
+  <div class="sidebar-footer">
+
+    <a
+      routerLink="/perfil"
+      routerLinkActive="ativo">
+
+      <i class="fa-regular fa-user"></i>
+      <span>Perfil</span>
+
+    </a>
+
+    <a
+      role="button"
+      tabindex="0"
+      (click)="sair()"
+      (keydown.enter)="sair()">
+
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span>Sair</span>
+
+    </a>
+
+  </div>
 
 </div>
