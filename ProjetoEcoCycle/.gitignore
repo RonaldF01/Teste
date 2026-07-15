@@ -1,0 +1,15 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+
+# Cache do Angular
+.angular/
+
+# Arquivos temporários
+*.tsbuildinfo
+
+# Sistema
+.DS_Store
+Thumbs.db
